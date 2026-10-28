@@ -1,0 +1,122 @@
+[gd_scene format=3 uid="uid://dlis3fxmmla3f"]
+
+[ext_resource type="Script" uid="uid://3bmceqbolv6x" path="res://scripts/StoneIconUI.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://c1vkaxcjdbues" path="res://assets/UIimg/blueStoneIcon.png" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dot"]
+bg_color = Color(0.92, 0.92, 0.95, 0.95)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="StoneIcon" type="Control" unique_id=1704246254]
+custom_minimum_size = Vector2(70, 64)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1")
+team = "blue"
+
+[node name="TypeFrame" type="Panel" parent="." unique_id=1879508118]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="StoneSlot" type="CenterContainer" parent="." unique_id=226658850]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="StoneVisual" type="Control" parent="StoneSlot" unique_id=1480957732]
+custom_minimum_size = Vector2(50, 42)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Shadow" type="TextureRect" parent="StoneSlot/StoneVisual" unique_id=1324373903]
+modulate = Color(0, 0, 0, 0.28)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 3.0
+offset_right = 2.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Stone" type="TextureRect" parent="StoneSlot/StoneVisual" unique_id=1946418764]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TypeBadge" type="Label" parent="." unique_id=1677183554]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -24.0
+offset_top = 3.0
+offset_right = -4.0
+offset_bottom = 21.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.22, 0.24, 0.28, 1)
+theme_override_font_sizes/font_size = 12
+text = "N"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MassDots" type="HBoxContainer" parent="." unique_id=2078894764]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -14.0
+offset_top = -11.0
+offset_right = 14.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 3
+alignment = 1
+
+[node name="Dot1" type="Panel" parent="MassDots" unique_id=290570945]
+custom_minimum_size = Vector2(6, 6)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dot")
+
+[node name="Dot2" type="Panel" parent="MassDots" unique_id=1121306397]
+custom_minimum_size = Vector2(6, 6)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dot")
+
+[node name="Dot3" type="Panel" parent="MassDots" unique_id=1658960573]
+custom_minimum_size = Vector2(6, 6)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dot")

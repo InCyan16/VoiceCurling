@@ -1,0 +1,56 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cevigddsu3v43"]
+
+[sub_resource type="Shader" id="Shader_ice_track"]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx;
+
+uniform vec4 deep_ice_color : source_color = vec4(0.46, 0.78, 1.0, 1.0);
+uniform vec4 clear_ice_color : source_color = vec4(0.86, 0.97, 1.0, 1.0);
+uniform vec4 frost_color : source_color = vec4(0.98, 1.0, 1.0, 1.0);
+uniform vec4 reflection_color : source_color = vec4(0.82, 0.94, 1.0, 1.0);
+uniform float frost_strength : hint_range(0.0, 1.0) = 0.30;
+uniform float scratch_strength : hint_range(0.0, 1.0) = 0.46;
+uniform float reflection_strength : hint_range(0.0, 1.0) = 0.64;
+
+float hash21(vec2 p) {
+	p = fract(p * vec2(123.34, 456.21));
+	p += dot(p, p + 45.32);
+	return fract(p.x * p.y);
+}
+
+void fragment() {
+	vec2 uv = UV;
+	float length_band = sin((uv.y * 18.0 + sin(uv.x * 4.0) * 0.35) * 6.28318) * 0.5 + 0.5;
+	float wide_reflection = smoothstep(0.78, 1.0, length_band) * smoothstep(0.08, 0.36, uv.x) * (1.0 - smoothstep(0.82, 0.96, uv.x));
+	float side_reflection = smoothstep(0.92, 1.0, sin((uv.x * 2.0 + uv.y * 0.45) * 6.28318) * 0.5 + 0.5);
+	float scratch_line = sin((uv.y * 260.0 + uv.x * 17.0) * 6.28318) * 0.5 + 0.5;
+	float scratch_noise = hash21(floor(uv * vec2(16.0, 150.0)));
+	float scratches = smoothstep(0.92, 1.0, scratch_line) * (1.0 - smoothstep(0.45, 0.92, scratch_noise));
+	float frost_noise = hash21(floor(uv * vec2(24.0, 54.0)));
+	float frost = smoothstep(0.48, 1.0, frost_noise * 0.66 + length_band * 0.34);
+	float view_glint = pow(1.0 - clamp(dot(normalize(NORMAL), normalize(VIEW)), 0.0, 1.0), 2.0);
+	float center_depth = 1.0 - smoothstep(0.18, 0.52, abs(uv.x - 0.5));
+	vec3 color = mix(clear_ice_color.rgb, deep_ice_color.rgb, center_depth * 0.28);
+	color = mix(color, frost_color.rgb, frost * frost_strength);
+	color = mix(color, reflection_color.rgb, (wide_reflection + side_reflection * 0.32 + view_glint * 0.42) * reflection_strength);
+	color += vec3(0.74, 0.90, 1.0) * scratches * scratch_strength * 0.24;
+	ALBEDO = color;
+	ROUGHNESS = mix(0.035, 0.18, frost);
+	METALLIC = 0.0;
+	SPECULAR = 1.0;
+	RIM = 0.38;
+	RIM_TINT = 0.55;
+	EMISSION = reflection_color.rgb * (wide_reflection * 0.18 + view_glint * 0.13 + scratches * 0.035);
+}"
+
+[resource]
+render_priority = 0
+next_pass = null
+shader = SubResource("Shader_ice_track")
+shader_parameter/deep_ice_color = Color(0.46, 0.78, 1, 1)
+shader_parameter/clear_ice_color = Color(0.86, 0.97, 1, 1)
+shader_parameter/frost_color = Color(0.96, 1, 1, 1)
+shader_parameter/reflection_color = Color(0.82, 0.94, 1, 1)
+shader_parameter/frost_strength = 0.3
+shader_parameter/scratch_strength = 0.46
+shader_parameter/reflection_strength = 0.64

@@ -1,0 +1,1189 @@
+[gd_scene format=3 uid="uid://ckghvhgwt3he4"]
+
+[ext_resource type="Script" uid="uid://dhy7a1srvgvrv" path="res://scripts/CurlingGame.gd" id="1"]
+[ext_resource type="Material" uid="uid://cevigddsu3v43" path="res://materials/ice_track_material.tres" id="2"]
+[ext_resource type="PackedScene" uid="uid://gwxs62g4vduc" path="res://accelerated_area_3d.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://v0raefbhmm8i" path="res://deceleration_area_3d.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://tqfeqldnc6dh" path="res://assets/lzy_converted/redCurling.glb" id="5"]
+[ext_resource type="PackedScene" uid="uid://dtkhdvbtpa7ym" path="res://assets/lzy_converted/curlingStone.glb" id="6"]
+[ext_resource type="Script" uid="uid://boujdpf484kt7" path="res://MicrophoneVolumeMonitor.gd" id="7"]
+[ext_resource type="AudioStream" uid="uid://cm3i2kcmjqv32" path="res://assets/music/curlRunSound.mp3" id="8"]
+[ext_resource type="AudioStream" uid="uid://bgy22ayrrgago" path="res://assets/music/colliderSound.mp3" id="9"]
+[ext_resource type="AudioStream" uid="uid://dcheug5uy0gxi" path="res://assets/music/curlBgSound.mp3" id="10"]
+[ext_resource type="Texture2D" uid="uid://dc6vqsl28oypm" path="res://assets/UIimg/redWinChin.png" id="11"]
+[ext_resource type="Texture2D" uid="uid://bp1sc1uuw7xhk" path="res://assets/UIimg/blueWinChin.png" id="12"]
+[ext_resource type="PackedScene" uid="uid://cc7ipbcubuf6f" path="res://SettingsPanel.tscn" id="13"]
+[ext_resource type="PackedScene" uid="uid://sgm16mm5jnqu" path="res://assets/UIimg/红冰壶.tscn" id="14"]
+[ext_resource type="PackedScene" uid="uid://dlis3fxmmla3f" path="res://assets/UIimg/蓝冰壶.tscn" id="15"]
+[ext_resource type="Texture2D" uid="uid://wc2d1luclecg" path="res://assets/UIimg/未命名 -21.png" id="16"]
+[ext_resource type="Texture2D" uid="uid://dll3l7cuyk16r" path="res://assets/UIimg/未命名 -178.png" id="17"]
+[ext_resource type="Texture2D" uid="uid://n7h4cam1e08s" path="res://assets/UIimg/arrow - 副本.png" id="18"]
+[ext_resource type="Texture2D" uid="uid://chs28g35i6wof" path="res://assets/UIimg/未命名 -11.png" id="19"]
+[ext_resource type="Texture2D" uid="uid://dltu252gpxilq" path="res://assets/UIimg/未命名 -122.png" id="20"]
+[ext_resource type="Texture2D" uid="uid://ctl3vcaqqhlq" path="res://assets/UIimg/箭头.png" id="21"]
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 1
+background_color = Color(0.6784314, 0.85882354, 0.9607843, 1)
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.7
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_track"]
+size = Vector2(5, 30)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blue"]
+albedo_color = Color(0.07450981, 0.40784314, 0.7607843, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_house_outer"]
+top_radius = 1.96
+bottom_radius = 1.96
+height = 0.012
+radial_segments = 96
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_white"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_house_white_a"]
+top_radius = 1.3
+bottom_radius = 1.3
+height = 0.012
+radial_segments = 96
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red"]
+albedo_color = Color(0.86, 0.05, 0.06, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_house_red"]
+top_radius = 0.65
+bottom_radius = 0.65
+height = 0.012
+radial_segments = 96
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4arys"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6iypd"]
+top_radius = 0.2
+bottom_radius = 0.2
+height = 0.012
+radial_segments = 96
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rink_line"]
+albedo_color = Color(0.48, 0.54, 0.58, 0.72)
+roughness = 0.32
+
+[sub_resource type="BoxMesh" id="BoxMesh_rink_center_line"]
+size = Vector3(0.035, 0.014, 27)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rink_cross_line"]
+size = Vector3(5, 0.014, 0.035)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_line"]
+albedo_color = Color(0.06, 0.08, 0.1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_start_line"]
+size = Vector3(5, 0.018, 0.04)
+
+[sub_resource type="BoxMesh" id="BoxMesh_out_line"]
+size = Vector3(5, 0.018, 0.06)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_wall"]
+friction = 0.0
+
+[sub_resource type="BoxShape3D" id="BoxShape_side_wall"]
+size = Vector3(0.16, 0.5, 28.133484)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_color = Color(0.12, 0.45, 0.82, 0.7)
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_side_wall"]
+size = Vector3(0.16, 0.5, 30)
+
+[sub_resource type="BoxShape3D" id="BoxShape_back_wall"]
+size = Vector3(5, 0.5, 0.12)
+
+[sub_resource type="BoxMesh" id="BoxMesh_back_wall"]
+size = Vector3(5, 0.5, 0.12)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bouncy"]
+friction = 0.0
+bounce = 0.72
+
+[sub_resource type="SphereShape3D" id="SphereShape_stone"]
+radius = 0.24
+
+[sub_resource type="BoxMesh" id="BoxMesh_indicator_panel"]
+size = Vector3(1.2, 0.08, 1.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_power"]
+albedo_color = Color(1, 0.62, 0.05, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_power_fill"]
+size = Vector3(0.32, 0.08, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_direction"]
+albedo_color = Color(0.1, 0.8, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_direction_bar"]
+size = Vector3(1.8, 0.08, 0.08)
+
+[sub_resource type="BoxMesh" id="BoxMesh_direction_needle"]
+size = Vector3(0.11, 0.012, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aim"]
+transparency = 1
+albedo_color = Color(1, 0.12, 0.08, 0.65)
+
+[sub_resource type="BoxMesh" id="BoxMesh_aim_segment"]
+size = Vector3(0.08, 0.04, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_imku0"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cdqbm"]
+bg_color = Color(1, 1, 1, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wc5p8"]
+bg_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4arys"]
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsk3o"]
+bg_color = Color(0, 0, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6iypd"]
+bg_color = Color(0, 0, 1, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tereu"]
+bg_color = Color(1, 1, 1, 0.25490198)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sc1dx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sc1dx"]
+bg_color = Color(0.4834036, 0.5766774, 0.76737565, 0.43300003)
+
+[node name="VoiceCurling" type="Node3D" unique_id=674989332]
+script = ExtResource("1")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=670752522]
+environment = SubResource("Environment_main")
+
+[node name="SunLight" type="DirectionalLight3D" parent="." unique_id=191075137]
+transform = Transform3D(1, 0, 0, 0, 0.469472, -0.882948, 0, 0.882948, 0.469472, 0, 0, 0)
+light_energy = 3.0
+
+[node name="IceTrack" type="MeshInstance3D" parent="." unique_id=1861102723]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+material_override = ExtResource("2")
+mesh = SubResource("PlaneMesh_track")
+
+[node name="AcceleratedArea3D" parent="." unique_id=1272019670 instance=ExtResource("3")]
+visible = false
+monitoring = false
+
+[node name="DecelerationArea3D" parent="." unique_id=1992607997 instance=ExtResource("4")]
+visible = false
+monitoring = false
+
+[node name="House" type="Node3D" parent="." unique_id=1147339006]
+
+[node name="OuterBlue" type="MeshInstance3D" parent="House" unique_id=346736479]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.012, -4.904)
+material_override = SubResource("StandardMaterial3D_blue")
+mesh = SubResource("CylinderMesh_house_outer")
+
+[node name="WhiteA" type="MeshInstance3D" parent="House" unique_id=605512639]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.016, -4.904)
+material_override = SubResource("StandardMaterial3D_white")
+mesh = SubResource("CylinderMesh_house_white_a")
+
+[node name="RedRing" type="MeshInstance3D" parent="House" unique_id=1925998214]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -4.904)
+material_override = SubResource("StandardMaterial3D_red")
+mesh = SubResource("CylinderMesh_house_red")
+
+[node name="RedRing2" type="MeshInstance3D" parent="House" unique_id=975768722]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.020000715, -4.904)
+material_override = SubResource("StandardMaterial3D_4arys")
+mesh = SubResource("CylinderMesh_6iypd")
+
+[node name="RinkLines" type="Node3D" parent="." unique_id=1499532534]
+
+[node name="CenterLine" type="MeshInstance3D" parent="RinkLines" unique_id=263401347]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.034, 2)
+material_override = SubResource("StandardMaterial3D_rink_line")
+mesh = SubResource("BoxMesh_rink_center_line")
+
+[node name="BackSectionLine" type="MeshInstance3D" parent="RinkLines" unique_id=9997693]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.036, -8.2)
+material_override = SubResource("StandardMaterial3D_rink_line")
+mesh = SubResource("BoxMesh_rink_cross_line")
+
+[node name="HouseCenterLine" type="MeshInstance3D" parent="RinkLines" unique_id=1723012668]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.036, -4.904)
+material_override = SubResource("StandardMaterial3D_rink_line")
+mesh = SubResource("BoxMesh_rink_cross_line")
+
+[node name="MiddleSectionLine" type="MeshInstance3D" parent="RinkLines" unique_id=1376258956]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.036, 0.05)
+material_override = SubResource("StandardMaterial3D_rink_line")
+mesh = SubResource("BoxMesh_rink_cross_line")
+
+[node name="ThrowSectionLine" type="MeshInstance3D" parent="RinkLines" unique_id=748061976]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.036, 10.4)
+material_override = SubResource("StandardMaterial3D_rink_line")
+mesh = SubResource("BoxMesh_rink_cross_line")
+
+[node name="StartLine" type="MeshInstance3D" parent="." unique_id=1600556163]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.035, 14.86)
+material_override = SubResource("StandardMaterial3D_line")
+mesh = SubResource("BoxMesh_start_line")
+
+[node name="OutLine" type="MeshInstance3D" parent="." unique_id=1749521208]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, -10.45)
+material_override = SubResource("StandardMaterial3D_red")
+mesh = SubResource("BoxMesh_out_line")
+
+[node name="Walls" type="Node3D" parent="." unique_id=1880882714]
+
+[node name="LeftWall" type="StaticBody3D" parent="Walls" unique_id=404746973]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.58, 0.25, 1)
+physics_material_override = SubResource("PhysicsMaterial_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/LeftWall" unique_id=1026157846]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.62042236)
+shape = SubResource("BoxShape_side_wall")
+
+[node name="Visual" type="MeshInstance3D" parent="Walls/LeftWall" unique_id=942863807]
+material_override = SubResource("StandardMaterial3D_wall")
+mesh = SubResource("BoxMesh_side_wall")
+
+[node name="RightWall" type="StaticBody3D" parent="Walls" unique_id=1126429647]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.58, 0.25, 1)
+physics_material_override = SubResource("PhysicsMaterial_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/RightWall" unique_id=1145480180]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.9463196)
+shape = SubResource("BoxShape_side_wall")
+
+[node name="Visual" type="MeshInstance3D" parent="Walls/RightWall" unique_id=1932711695]
+material_override = SubResource("StandardMaterial3D_wall")
+mesh = SubResource("BoxMesh_side_wall")
+
+[node name="BackWall" type="StaticBody3D" parent="Walls" unique_id=667301668]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, -10.55)
+physics_material_override = SubResource("PhysicsMaterial_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/BackWall" unique_id=1801610460]
+shape = SubResource("BoxShape_back_wall")
+
+[node name="Visual" type="MeshInstance3D" parent="Walls/BackWall" unique_id=1502005658]
+material_override = SubResource("StandardMaterial3D_wall")
+mesh = SubResource("BoxMesh_back_wall")
+
+[node name="Stones" type="Node3D" parent="." unique_id=965212933]
+
+[node name="RedStone01" type="RigidBody3D" parent="Stones" unique_id=1144920003]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 24.86)
+visible = false
+mass = 19.0
+physics_material_override = SubResource("PhysicsMaterial_bouncy")
+gravity_scale = 0.0
+freeze = true
+contact_monitor = true
+max_contacts_reported = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Stones/RedStone01" unique_id=962726062]
+shape = SubResource("SphereShape_stone")
+
+[node name="Visual" parent="Stones/RedStone01" unique_id=877793211 instance=ExtResource("5")]
+transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
+
+[node name="BlueStone01" type="RigidBody3D" parent="Stones" unique_id=210529041]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 24.86)
+visible = false
+mass = 19.0
+physics_material_override = SubResource("PhysicsMaterial_bouncy")
+gravity_scale = 0.0
+freeze = true
+contact_monitor = true
+max_contacts_reported = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Stones/BlueStone01" unique_id=1923757853]
+shape = SubResource("SphereShape_stone")
+
+[node name="Visual" parent="Stones/BlueStone01" unique_id=1953158626 instance=ExtResource("6")]
+transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
+
+[node name="RedStone02" type="RigidBody3D" parent="Stones" unique_id=938223692]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 24.86)
+visible = false
+mass = 19.0
+physics_material_override = SubResource("PhysicsMaterial_bouncy")
+gravity_scale = 0.0
+freeze = true
+contact_monitor = true
+max_contacts_reported = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Stones/RedStone02" unique_id=160679517]
+shape = SubResource("SphereShape_stone")
+
+[node name="Visual" parent="Stones/RedStone02" unique_id=2055098043 instance=ExtResource("5")]
+transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
+
+[node name="BlueStone02" type="RigidBody3D" parent="Stones" unique_id=261358061]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 24.86)
+visible = false
+mass = 19.0
+physics_material_override = SubResource("PhysicsMaterial_bouncy")
+gravity_scale = 0.0
+freeze = true
+contact_monitor = true
+max_contacts_reported = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Stones/BlueStone02" unique_id=913159985]
+shape = SubResource("SphereShape_stone")
+
+[node name="Visual" parent="Stones/BlueStone02" unique_id=146344537 instance=ExtResource("6")]
+transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
+
+[node name="RedStone03" type="RigidBody3D" parent="Stones" unique_id=876929527]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 24.86)
+visible = false
+mass = 19.0
+physics_material_override = SubResource("PhysicsMaterial_bouncy")
+gravity_scale = 0.0
+freeze = true
+contact_monitor = true
+max_contacts_reported = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Stones/RedStone03" unique_id=1246374679]
+shape = SubResource("SphereShape_stone")
+
+[node name="Visual" parent="Stones/RedStone03" unique_id=431546225 instance=ExtResource("5")]
+transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
+
+[node name="BlueStone03" type="RigidBody3D" parent="Stones" unique_id=1540592102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 24.86)
+visible = false
+mass = 19.0
+physics_material_override = SubResource("PhysicsMaterial_bouncy")
+gravity_scale = 0.0
+freeze = true
+contact_monitor = true
+max_contacts_reported = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Stones/BlueStone03" unique_id=1278118024]
+shape = SubResource("SphereShape_stone")
+
+[node name="Visual" parent="Stones/BlueStone03" unique_id=2060966325 instance=ExtResource("6")]
+transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
+
+[node name="RedStone04" type="RigidBody3D" parent="Stones" unique_id=1263814905]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 24.86)
+visible = false
+mass = 19.0
+physics_material_override = SubResource("PhysicsMaterial_bouncy")
+gravity_scale = 0.0
+freeze = true
+contact_monitor = true
+max_contacts_reported = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Stones/RedStone04" unique_id=1675698763]
+shape = SubResource("SphereShape_stone")
+
+[node name="Visual" parent="Stones/RedStone04" unique_id=400088260 instance=ExtResource("5")]
+transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
+
+[node name="BlueStone04" type="RigidBody3D" parent="Stones" unique_id=1989294279]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 24.86)
+visible = false
+mass = 19.0
+physics_material_override = SubResource("PhysicsMaterial_bouncy")
+gravity_scale = 0.0
+freeze = true
+contact_monitor = true
+max_contacts_reported = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Stones/BlueStone04" unique_id=1012513801]
+shape = SubResource("SphereShape_stone")
+
+[node name="Visual" parent="Stones/BlueStone04" unique_id=241268773 instance=ExtResource("6")]
+transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
+
+[node name="RedStone05" type="RigidBody3D" parent="Stones" unique_id=1590629331]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 24.86)
+visible = false
+mass = 19.0
+physics_material_override = SubResource("PhysicsMaterial_bouncy")
+gravity_scale = 0.0
+freeze = true
+contact_monitor = true
+max_contacts_reported = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Stones/RedStone05" unique_id=877367554]
+shape = SubResource("SphereShape_stone")
+
+[node name="Visual" parent="Stones/RedStone05" unique_id=903609125 instance=ExtResource("5")]
+transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
+
+[node name="BlueStone05" type="RigidBody3D" parent="Stones" unique_id=1204090319]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 24.86)
+visible = false
+mass = 19.0
+physics_material_override = SubResource("PhysicsMaterial_bouncy")
+gravity_scale = 0.0
+freeze = true
+contact_monitor = true
+max_contacts_reported = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Stones/BlueStone05" unique_id=1437360716]
+shape = SubResource("SphereShape_stone")
+
+[node name="Visual" parent="Stones/BlueStone05" unique_id=787950315 instance=ExtResource("6")]
+transform = Transform3D(1.7, 0, 0, 0, 1.7, 0, 0, 0, 1.7, 0, 0, 0)
+
+[node name="VoiceIndicators" type="Node3D" parent="." unique_id=541027978]
+
+[node name="PowerIndicator" type="Node3D" parent="VoiceIndicators" unique_id=1622806053]
+transform = Transform3D(1, 0, 0, 0, 0.422618, 0.906308, 0, -0.906308, 0.422618, 3.6, 1.2, 8)
+visible = false
+
+[node name="Panel" type="MeshInstance3D" parent="VoiceIndicators/PowerIndicator" unique_id=185061327]
+material_override = SubResource("StandardMaterial3D_wall")
+mesh = SubResource("BoxMesh_indicator_panel")
+
+[node name="Fill" type="MeshInstance3D" parent="VoiceIndicators/PowerIndicator" unique_id=1644763720]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, -0.45, 0)
+material_override = SubResource("StandardMaterial3D_power")
+mesh = SubResource("BoxMesh_power_fill")
+
+[node name="Label3D" type="Label3D" parent="VoiceIndicators/PowerIndicator" unique_id=1111972949]
+transform = Transform3D(0.012, 0, 0, 0, 0.012, 0, 0, 0, 0.012, 0, 0.72, 0)
+text = "POWER"
+font_size = 48
+
+[node name="DirectionIndicator" type="Node3D" parent="VoiceIndicators" unique_id=196456905]
+transform = Transform3D(1, 0, 0, 0, 0.422618, 0.906308, 0, -0.906308, 0.422618, -3.6, 1.2, 8)
+visible = false
+
+[node name="Panel" type="MeshInstance3D" parent="VoiceIndicators/DirectionIndicator" unique_id=1195254207]
+material_override = SubResource("StandardMaterial3D_wall")
+mesh = SubResource("BoxMesh_indicator_panel")
+
+[node name="Bar" type="MeshInstance3D" parent="VoiceIndicators/DirectionIndicator" unique_id=167925930]
+material_override = SubResource("StandardMaterial3D_direction")
+mesh = SubResource("BoxMesh_direction_bar")
+
+[node name="Needle" type="MeshInstance3D" parent="VoiceIndicators/DirectionIndicator" unique_id=659683491]
+visible = false
+material_override = SubResource("StandardMaterial3D_power")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Label3D" type="Label3D" parent="VoiceIndicators/DirectionIndicator" unique_id=41850417]
+transform = Transform3D(0.012, 0, 0, 0, 0.012, 0, 0, 0, 0.012, 0, 0.72, 0)
+text = "DIRECTION"
+font_size = 48
+
+[node name="DirectionLine" type="Node3D" parent="." unique_id=1376684619]
+visible = false
+
+[node name="Segment01" type="MeshInstance3D" parent="DirectionLine" unique_id=547590884]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment02" type="MeshInstance3D" parent="DirectionLine" unique_id=1189555215]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment03" type="MeshInstance3D" parent="DirectionLine" unique_id=1538884151]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment04" type="MeshInstance3D" parent="DirectionLine" unique_id=1455556707]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment05" type="MeshInstance3D" parent="DirectionLine" unique_id=291768776]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment06" type="MeshInstance3D" parent="DirectionLine" unique_id=65490246]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment07" type="MeshInstance3D" parent="DirectionLine" unique_id=594072591]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment08" type="MeshInstance3D" parent="DirectionLine" unique_id=276446652]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment09" type="MeshInstance3D" parent="DirectionLine" unique_id=262525476]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment10" type="MeshInstance3D" parent="DirectionLine" unique_id=1940151077]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment11" type="MeshInstance3D" parent="DirectionLine" unique_id=427993646]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment12" type="MeshInstance3D" parent="DirectionLine" unique_id=1096149000]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment13" type="MeshInstance3D" parent="DirectionLine" unique_id=1560468376]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment14" type="MeshInstance3D" parent="DirectionLine" unique_id=922533336]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment15" type="MeshInstance3D" parent="DirectionLine" unique_id=2061938181]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment16" type="MeshInstance3D" parent="DirectionLine" unique_id=411848321]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment17" type="MeshInstance3D" parent="DirectionLine" unique_id=1410961673]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment18" type="MeshInstance3D" parent="DirectionLine" unique_id=1750985033]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment19" type="MeshInstance3D" parent="DirectionLine" unique_id=1239004464]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment20" type="MeshInstance3D" parent="DirectionLine" unique_id=1887315579]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment21" type="MeshInstance3D" parent="DirectionLine" unique_id=446600397]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment22" type="MeshInstance3D" parent="DirectionLine" unique_id=1415246705]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment23" type="MeshInstance3D" parent="DirectionLine" unique_id=341290262]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="Segment24" type="MeshInstance3D" parent="DirectionLine" unique_id=1746285151]
+material_override = SubResource("StandardMaterial3D_power")
+mesh = SubResource("BoxMesh_direction_needle")
+
+[node name="AimLine" type="Node3D" parent="." unique_id=968226619]
+visible = false
+
+[node name="Dot01" type="MeshInstance3D" parent="AimLine" unique_id=1620098420]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot02" type="MeshInstance3D" parent="AimLine" unique_id=1672599301]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot03" type="MeshInstance3D" parent="AimLine" unique_id=1296871192]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot04" type="MeshInstance3D" parent="AimLine" unique_id=1056935040]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot05" type="MeshInstance3D" parent="AimLine" unique_id=1826600915]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot06" type="MeshInstance3D" parent="AimLine" unique_id=1156979348]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot07" type="MeshInstance3D" parent="AimLine" unique_id=923971263]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot08" type="MeshInstance3D" parent="AimLine" unique_id=571847005]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot09" type="MeshInstance3D" parent="AimLine" unique_id=1441446284]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot10" type="MeshInstance3D" parent="AimLine" unique_id=1147224140]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot11" type="MeshInstance3D" parent="AimLine" unique_id=1290537413]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot12" type="MeshInstance3D" parent="AimLine" unique_id=1252467162]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot13" type="MeshInstance3D" parent="AimLine" unique_id=999511050]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot14" type="MeshInstance3D" parent="AimLine" unique_id=2098256427]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot15" type="MeshInstance3D" parent="AimLine" unique_id=1710291475]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot16" type="MeshInstance3D" parent="AimLine" unique_id=536690939]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot17" type="MeshInstance3D" parent="AimLine" unique_id=406123843]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot18" type="MeshInstance3D" parent="AimLine" unique_id=1134471275]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot19" type="MeshInstance3D" parent="AimLine" unique_id=1836634193]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot20" type="MeshInstance3D" parent="AimLine" unique_id=1762019087]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot21" type="MeshInstance3D" parent="AimLine" unique_id=460177388]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot22" type="MeshInstance3D" parent="AimLine" unique_id=274370204]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot23" type="MeshInstance3D" parent="AimLine" unique_id=629505917]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="Dot24" type="MeshInstance3D" parent="AimLine" unique_id=319989420]
+material_override = SubResource("StandardMaterial3D_aim")
+mesh = SubResource("BoxMesh_aim_segment")
+
+[node name="CameraPivot" type="Node3D" parent="." unique_id=1379869806]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.8)
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot" unique_id=1529331894]
+transform = Transform3D(1, 0, 0, 0, 0.97660494, 0.21504161, 0, -0.21504161, 0.97660494, 0, 2.3133378, 12.434625)
+current = true
+fov = 55.0
+
+[node name="MicrophoneVolumeMonitor" type="Node" parent="." unique_id=991413676]
+script = ExtResource("7")
+threshold_db = 30.0
+
+[node name="MicrophoneInput" type="AudioStreamPlayer" parent="." unique_id=719636977]
+
+[node name="Audio" type="Node" parent="." unique_id=62575967]
+
+[node name="RunSound" type="AudioStreamPlayer" parent="Audio" unique_id=304260151]
+stream = ExtResource("8")
+volume_db = -16.0
+
+[node name="ColliderSound" type="AudioStreamPlayer" parent="Audio" unique_id=832424293]
+stream = ExtResource("9")
+
+[node name="BgSound" type="AudioStreamPlayer" parent="Audio" unique_id=1371040276]
+stream = ExtResource("10")
+volume_db = -12.0
+autoplay = true
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1179008566]
+
+[node name="Panel" type="PanelContainer" parent="HUD" unique_id=214484572]
+visible = false
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = 146.0
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/Panel" unique_id=1014493288]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Panel/MarginContainer" unique_id=232115960]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="HUD/Panel/MarginContainer/VBoxContainer" unique_id=728283882]
+layout_mode = 2
+text = "Ready"
+
+[node name="ScoreLabel" type="Label" parent="HUD/Panel/MarginContainer/VBoxContainer" unique_id=533932206]
+layout_mode = 2
+text = "Red 0 : Blue 0"
+
+[node name="SetupLabel" type="Label" parent="HUD/Panel/MarginContainer/VBoxContainer" unique_id=2135988584]
+layout_mode = 2
+text = "Voice setup"
+
+[node name="ResultPanel" type="PanelContainer" parent="HUD" unique_id=1676674104]
+visible = false
+self_modulate = Color(0, 0, 0, 0.68100005)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -120.0
+offset_right = 220.0
+offset_bottom = 120.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_imku0")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/ResultPanel" unique_id=1754190170]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/ResultPanel/MarginContainer" unique_id=251726806]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ResultLabel" type="Label" parent="HUD/ResultPanel/MarginContainer/VBoxContainer" unique_id=995140675]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 36
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="RedWinChin" type="TextureRect" parent="HUD/ResultPanel/MarginContainer/VBoxContainer" unique_id=696845757]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("11")
+
+[node name="BlueWinChin" type="TextureRect" parent="HUD/ResultPanel/MarginContainer/VBoxContainer" unique_id=1359395578]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("12")
+
+[node name="RestartButton" type="Button" parent="HUD/ResultPanel/MarginContainer/VBoxContainer" unique_id=766217142]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Restart"
+
+[node name="BackToMenuButton" type="Button" parent="HUD/ResultPanel/MarginContainer/VBoxContainer" unique_id=766217143]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Back to Menu               "
+
+[node name="倒计时标签" type="Label" parent="HUD" unique_id=130706512]
+custom_minimum_size = Vector2(800, 60)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = 50.0
+offset_right = 400.0
+offset_bottom = 110.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_cdqbm")
+text = "5.000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="调整指示" type="Label" parent="HUD/倒计时标签" unique_id=1623238614]
+visible = false
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -129.0
+offset_top = 59.0
+offset_right = 129.0
+offset_bottom = 109.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 36
+text = "Adjusting power"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RestartButton" type="Button" parent="HUD" unique_id=335921362]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -274.0
+offset_top = 50.0
+offset_right = -72.0
+offset_bottom = 110.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 30
+text = "Restart"
+
+[node name="SettingsButton" type="Button" parent="HUD" unique_id=335921363]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -486.0
+offset_top = 50.0
+offset_right = -294.0
+offset_bottom = 110.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 30
+text = "Settings         "
+
+[node name="SettingsPanel" parent="HUD" unique_id=237993063 instance=ExtResource("13")]
+visible = false
+
+[node name="分数" type="VBoxContainer" parent="HUD" unique_id=713301912]
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 334.0
+offset_bottom = 642.0
+theme_override_constants/separation = 16
+
+[node name="BoxContainer" type="HBoxContainer" parent="HUD/分数" unique_id=2041016715]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="HUD/分数/BoxContainer" unique_id=1638705588]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_wc5p8")
+text = "Red Score"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="红方得分" type="Label" parent="HUD/分数/BoxContainer" unique_id=1978876645]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_4arys")
+text = "X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/分数" unique_id=1350784727]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label2" type="Label" parent="HUD/分数/HBoxContainer" unique_id=214046637]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxFlat_jsk3o")
+text = "Blue Score"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="蓝方得分" type="Label" parent="HUD/分数/HBoxContainer" unique_id=425302135]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+theme_override_styles/normal = SubResource("StyleBoxFlat_6iypd")
+text = "X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="冰壶计数盒子" type="HBoxContainer" parent="HUD/分数" unique_id=1714056460]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 20
+
+[node name="Panel" type="Panel" parent="HUD/分数/冰壶计数盒子" unique_id=1148861782]
+custom_minimum_size = Vector2(100, 420)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tereu")
+
+[node name="红方冰壶" type="VBoxContainer" parent="HUD/分数/冰壶计数盒子/Panel" unique_id=1801864974]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 8.0
+offset_right = -6.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 3
+alignment = 1
+
+[node name="RedLeft01" parent="HUD/分数/冰壶计数盒子/Panel/红方冰壶" unique_id=1949594068 instance=ExtResource("14")]
+layout_mode = 2
+
+[node name="RedLeft02" parent="HUD/分数/冰壶计数盒子/Panel/红方冰壶" unique_id=1413016458 instance=ExtResource("14")]
+layout_mode = 2
+
+[node name="RedLeft03" parent="HUD/分数/冰壶计数盒子/Panel/红方冰壶" unique_id=1173886769 instance=ExtResource("14")]
+layout_mode = 2
+
+[node name="RedLeft04" parent="HUD/分数/冰壶计数盒子/Panel/红方冰壶" unique_id=413726128 instance=ExtResource("14")]
+layout_mode = 2
+
+[node name="RedLeft05" parent="HUD/分数/冰壶计数盒子/Panel/红方冰壶" unique_id=539120454 instance=ExtResource("14")]
+layout_mode = 2
+
+[node name="Panel3" type="Panel" parent="HUD/分数/冰壶计数盒子" unique_id=1520786190]
+custom_minimum_size = Vector2(100, 420)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tereu")
+
+[node name="蓝方冰壶" type="VBoxContainer" parent="HUD/分数/冰壶计数盒子/Panel3" unique_id=724057464]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 8.0
+offset_right = -6.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 3
+alignment = 1
+
+[node name="BlueLeft01" parent="HUD/分数/冰壶计数盒子/Panel3/蓝方冰壶" unique_id=1417765431 instance=ExtResource("15")]
+layout_mode = 2
+
+[node name="BlueLeft02" parent="HUD/分数/冰壶计数盒子/Panel3/蓝方冰壶" unique_id=913269463 instance=ExtResource("15")]
+layout_mode = 2
+
+[node name="BlueLeft03" parent="HUD/分数/冰壶计数盒子/Panel3/蓝方冰壶" unique_id=1692363034 instance=ExtResource("15")]
+layout_mode = 2
+
+[node name="BlueLeft04" parent="HUD/分数/冰壶计数盒子/Panel3/蓝方冰壶" unique_id=1827215941 instance=ExtResource("15")]
+layout_mode = 2
+
+[node name="BlueLeft05" parent="HUD/分数/冰壶计数盒子/Panel3/蓝方冰壶" unique_id=1044834341 instance=ExtResource("15")]
+layout_mode = 2
+
+[node name="PowerVolumeBar" type="TextureProgressBar" parent="HUD" unique_id=985629296]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 14)
+offset_left = 1398.0
+offset_top = 384.0
+offset_right = 1458.0
+offset_bottom = 614.0
+fill_mode = 3
+nine_patch_stretch = true
+texture_under = ExtResource("16")
+texture_progress = ExtResource("17")
+
+[node name="Power" type="Label" parent="HUD/PowerVolumeBar" unique_id=1932655815]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -38.5
+offset_right = 38.5
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 30
+text = "100%"
+
+[node name="Arrow" type="TextureRect" parent="HUD/PowerVolumeBar" unique_id=183834682]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -13.0
+offset_top = -14.0
+offset_right = 12.0
+offset_bottom = 11.0
+grow_vertical = 0
+texture = ExtResource("18")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DirecctionVolumeBar" type="TextureProgressBar" parent="HUD" unique_id=1351267759]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(200, 60)
+offset_left = 298.0
+offset_top = 489.0
+offset_right = 498.0
+offset_bottom = 629.0
+value = 1.0
+fill_mode = 4
+radial_initial_angle = 305.0
+radial_fill_degrees = 115.0
+radial_center_offset = Vector2(0, 70)
+nine_patch_stretch = true
+texture_under = ExtResource("19")
+texture_progress = ExtResource("20")
+
+[node name="Direction" type="Label" parent="HUD/DirecctionVolumeBar" unique_id=1177031033]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -23.5
+offset_top = -1.3707886
+offset_right = 23.5
+offset_bottom = 40.62921
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 30
+text = "45°"
+
+[node name="Arrow" type="Control" parent="HUD/DirecctionVolumeBar" unique_id=1900381465]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Arrow" type="TextureRect" parent="HUD/DirecctionVolumeBar/Arrow" unique_id=101782731]
+layout_mode = 1
+offset_left = -104.0
+offset_top = -112.0
+offset_right = -79.0
+offset_bottom = -87.0
+rotation = -0.7853982
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("21")
+expand_mode = 1
+stretch_mode = 5
+flip_v = true
+
+[node name="Panel2" type="Panel" parent="HUD" unique_id=168252052]
+clip_children = 1
+clip_contents = true
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -281.0
+offset_top = 152.0
+offset_right = -65.0
+offset_bottom = 368.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_sc1dx")
+metadata/_edit_group_ = true
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="HUD/Panel2" unique_id=1372406522]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewport" type="SubViewport" parent="HUD/Panel2/SubViewportContainer" unique_id=1018677573]
+handle_input_locally = false
+size = Vector2i(256, 256)
+render_target_update_mode = 0
+
+[node name="Camera3D" type="Camera3D" parent="HUD/Panel2/SubViewportContainer/SubViewport" unique_id=1612064719]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 6.5, -4.9)
+current = true
+fov = 55.0
+
+[node name="StartPanel" type="Panel" parent="HUD" unique_id=211230155]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 634.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sc1dx")
+
+[node name="Label" type="Label" parent="HUD/StartPanel" unique_id=942822331]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -11.5
+offset_right = 48.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 64
+text = "Press any key to start"
+
+[node name="CurrentStoneLabel" type="Label" parent="HUD/StartPanel" unique_id=1116600376]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = 64.0
+offset_right = 240.0
+offset_bottom = 112.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "Current stone: Normal"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="HUD/ResultPanel/MarginContainer/VBoxContainer/BackToMenuButton" to="." method="_on_back_to_menu_pressed"]
+[connection signal="pressed" from="HUD/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="HUD/SettingsButton" to="." method="_on_settings_button_pressed"]

@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://gwxs62g4vduc"]
+
+[ext_resource type="Script" uid="uid://bp6gjeg7i6yy4" path="res://scripts/PowerBandVisual.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://wxo2r8ngvodl" path="res://assets/texture/加速带.png" id="2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_by7nb"]
+size = Vector3(0.7, 0.6, 0.95)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_bloom"]
+size = Vector2(0.82, 1.1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_halo"]
+size = Vector2(0.74, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_surface"]
+size = Vector2(0.66, 0.9)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_arrow"]
+size = Vector2(0.92, 0.86)
+
+[node name="AcceleratedArea3D" type="Area3D" unique_id=1040512279]
+script = ExtResource("1")
+arrow_texture = ExtResource("2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1943778843]
+shape = SubResource("BoxShape3D_by7nb")
+
+[node name="VisualRoot" type="Node3D" parent="." unique_id=1379010414]
+
+[node name="BandLight" type="OmniLight3D" parent="VisualRoot" unique_id=1045535697]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+light_color = Color(0.35, 1, 0.55, 1)
+light_energy = 0.6
+omni_range = 1.4
+
+[node name="OuterBloom" type="MeshInstance3D" parent="VisualRoot" unique_id=720389294]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.085, 0)
+mesh = SubResource("PlaneMesh_bloom")
+
+[node name="GlowHalo" type="MeshInstance3D" parent="VisualRoot" unique_id=98926362]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.088, 0)
+mesh = SubResource("PlaneMesh_halo")
+
+[node name="BandSurface" type="MeshInstance3D" parent="VisualRoot" unique_id=1624455416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.092, 0)
+mesh = SubResource("PlaneMesh_surface")
+
+[node name="ArrowDecal" type="MeshInstance3D" parent="VisualRoot" unique_id=104853244]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, 0)
+mesh = SubResource("PlaneMesh_arrow")
+
+[node name="SparkParticles" type="GPUParticles3D" parent="VisualRoot" unique_id=251257776]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0)
+amount = 10
+visibility_aabb = AABB(-1, -0.5, -1.4, 2, 1.2, 2.8)
+local_coords = true

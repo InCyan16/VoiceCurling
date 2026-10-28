@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://v0raefbhmm8i"]
+
+[ext_resource type="Script" uid="uid://bp6gjeg7i6yy4" path="res://scripts/PowerBandVisual.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://dq1ra0fhalv6r" path="res://assets/texture/减速带.png" id="2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dr7hi"]
+size = Vector3(0.7, 0.6, 0.95)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_bloom"]
+size = Vector2(0.82, 1.1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_halo"]
+size = Vector2(0.74, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_surface"]
+size = Vector2(0.66, 0.9)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_arrow"]
+size = Vector2(0.92, 0.86)
+
+[node name="DecelerationArea3D" type="Area3D" unique_id=1331119076]
+script = ExtResource("1")
+band_type = 1
+arrow_texture = ExtResource("2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=37529188]
+shape = SubResource("BoxShape3D_dr7hi")
+
+[node name="VisualRoot" type="Node3D" parent="." unique_id=1430778590]
+
+[node name="BandLight" type="OmniLight3D" parent="VisualRoot" unique_id=1010313698]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+light_color = Color(1, 0.35, 0.25, 1)
+light_energy = 0.6
+omni_range = 1.4
+
+[node name="OuterBloom" type="MeshInstance3D" parent="VisualRoot" unique_id=51264584]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.085, 0)
+mesh = SubResource("PlaneMesh_bloom")
+
+[node name="GlowHalo" type="MeshInstance3D" parent="VisualRoot" unique_id=692393179]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.088, 0)
+mesh = SubResource("PlaneMesh_halo")
+
+[node name="BandSurface" type="MeshInstance3D" parent="VisualRoot" unique_id=1350472064]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.092, 0)
+mesh = SubResource("PlaneMesh_surface")
+
+[node name="ArrowDecal" type="MeshInstance3D" parent="VisualRoot" unique_id=1670467210]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, 0)
+mesh = SubResource("PlaneMesh_arrow")
+
+[node name="SparkParticles" type="GPUParticles3D" parent="VisualRoot" unique_id=501860862]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08, 0)
+amount = 10
+visibility_aabb = AABB(-1, -0.5, -1.4, 2, 1.2, 2.8)
+local_coords = true

@@ -1,0 +1,23 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Built executables (too large for GitHub; publish via Releases instead)
+*.exe
+
+# Scratch / reverse-engineering workspaces and helper output
+/_ctex/
+/_cur/
+/_final/
+/_game/
+/_gen/
+/_orig/
+/_orig2/
+/_probe/
+/_win/
+/_work/
+/_*.js
+/_*.ps1
+/_*.json
+/_*.txt
+/_*.png
